@@ -1,0 +1,51 @@
+device:
+  hostname: "leaf1.example.com"
+  type: "leaf"
+
+loopback_address: 10.0.1.1/32
+
+interfaces:
+  - name: swp49
+  - name: swp50
+  - name: swp51
+  - name: swp52
+  - name: swp1
+    access: 100
+
+bridge:
+  name: bridge
+  ports:
+    - swp1
+    - vxlan100
+  vids:
+    - 100
+  pvid: 1
+
+bonds:
+  - name: bond0
+    ports:
+      - swp49
+      - swp50
+  - name: bond1
+    ports:
+      - swp51
+      - swp52
+
+vlans:
+  - vid: 100
+
+VXLAN:
+  vxlans:
+    - vxlan_id: 100
+      vlan_id: 100
+
+bgp:
+  bgp_as: "65000"
+  bgp_rid: "10.0.1.1"
+  bgp_interfaces:
+    bond0:
+      bgp_type: external
+    bond1:
+      bgp_type: external
+  bgp_networks:
+    - 10.0.1.1/32

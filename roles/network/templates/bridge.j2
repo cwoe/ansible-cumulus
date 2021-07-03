@@ -1,0 +1,8 @@
+auto bridge
+iface bridge
+    bridge-ports {% for port in bridge.ports %}{{ port }} {% endfor %}
+    
+    bridge-pvid {{ bridge.pvid }}
+    bridge-vids {% for vid in bridge.vids %}{{ vid }} {% endfor %}
+    
+    bridge-vlan-aware yes

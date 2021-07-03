@@ -1,0 +1,65 @@
+---
+#
+#env
+#
+
+- name: Blank array
+  set_fact:
+    b1: []
+
+- name: Create the environment block
+  set_fact:
+    b1: "{{ b1 }} + ['{{ item }}=http://{{ proxy.user }}:{{ proxy.pass }}@{{ proxy.addr }}:{{ proxy.port }}/']"
+  with_items:
+    - http_proxy
+    - https_proxy
+    - ftp_proxy
+    - HTTP_PROXY
+    - HTTPS_PROXY
+    - FTP_PROXY
+
+- name: Append to the environment block
+  set_fact:
+    b1: '{{ b1 }} + [''{{ item }}="localhost,127.0.0.1,10.0.0.0/8"'']'
+  with_items:
+    - no_proxy
+    - NO_PROXY
+
+- name: Update /etc/environment
+  blockinfile:
+    dest: /etc/environment
+    block: "{{ b1 | join('\n') }}"
+    insertafter: EOF
+    marker: "# {mark} ANSIBLE MANAGED BLOCK - PROXY"
+
+- name: Copy apt Proxy config
+  template:
+    src: "apt.j2"
+    dest: /etc/apt/apt.conf.d/proxy.conf
+    owner: root
+    group: root
+    mode: 0644
+
+- name: make sure git is installed
+  apt:
+    name: git
+    update_cache: yes
+    cache_valid_time: 3600
+
+- name: Add http proxy to git config
+  git_config:
+    name: http.proxy
+    scope: global
+    value: "http://{{ proxy.user }}:{{ proxy.pass }}@{{ proxy.addr }}:{{ proxy.port }}"
+
+- name: Add https proxy to git config
+  git_config:
+    name: https.proxy
+    scope: global
+    value: "https://{{ proxy.user }}:{{ proxy.pass }}@{{ proxy.addr }}:{{ proxy.port }}"
+
+- name: Set git to https
+  git_config:
+    name: url."https://github.com/".insteadOf
+    scope: global
+    value: git://github.com/

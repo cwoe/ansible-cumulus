@@ -1,0 +1,5 @@
+---
+- name: restart netd
+  service:
+    name: netd
+    state: restarted

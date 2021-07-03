@@ -1,0 +1,11 @@
+{% for item in interfaces %}
+auto {{ item.name }}
+iface {{ item.name }}
+{% if item.address is defined %}
+    address {{ item.address }}
+{% endif %}
+{% if item.access is defined %}
+    bridge-access {{ item.access }}
+{% endif %}
+
+{% endfor %}

@@ -1,0 +1,45 @@
+---
+- meta: flush_handlers
+
+- name: Listen on mgmt interface
+  ansible.builtin.lineinfile:
+    path: /etc/snmp/snmpd.conf
+    regexp: '^agentaddress {{ hostvars[inventory_hostname]["ansible_eth0"]["ipv4"]["address"] }}'
+    insertafter: '^agentaddress '
+    line: agentaddress {{ hostvars[inventory_hostname]["ansible_eth0"]["ipv4"]["address"] }}@mgmt
+  notify: restart snmpd
+
+- name: "Create User"
+  ansible.builtin.lineinfile:
+    path: /etc/snmp/snmpd.conf
+    regexp: '^createuser {{ item.user }} {{ item.auth.type }} {{ item.auth.pass }} {{ item.encrypt.type }} {{ item.encrypt.pass }}'
+    insertafter: '^createuser '
+    line: createuser {{ item.user }} {{ item.auth.type }} {{ item.auth.pass }} {{ item.encrypt.type }} {{ item.encrypt.pass }}
+  loop: "{{ snmp }}"
+  notify: restart snmpd
+
+- name: Set user to rw
+  ansible.builtin.lineinfile:
+    path: /etc/snmp/snmpd.conf
+    regexp: '^r[ow]user {{ item.user }} priv'
+    insertafter: '^rouser '
+    line: rwuser {{ item.user }} priv
+  loop: "{{ snmp }}"
+  notify: restart snmpd
+  when: item.write == true
+
+- name: Set usewr to ro
+  ansible.builtin.lineinfile:
+    path: /etc/snmp/snmpd.conf
+    regexp: '^r[ow]user {{ item.user }} priv'
+    insertafter: '^rouser '
+    line: rouser {{ item.user }} priv
+  loop: "{{ snmp }}"
+  notify: restart snmpd
+  when: item.write != true
+
+- name: Make sure snmpd is running and enabled
+  service:
+    name: snmpd
+    state: started
+    enabled: true

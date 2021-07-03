@@ -1,0 +1,4 @@
+---
+domain: example.com
+nameservers:
+  - 10.0.0.1

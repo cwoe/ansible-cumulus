@@ -1,0 +1,10 @@
+---
+snmp:
+  - user: youruser
+    auth:
+      type: SHA
+      pass: yoursecret
+    encrypt:
+      type: AES
+      pass: yoursecret
+    write: true

@@ -1,0 +1,12 @@
+---
+- name: Set sudoers to nopasswd
+  lineinfile:
+    path: /etc/sudoers
+    regexp: '^%sudo'
+    line: '%sudo   ALL=NOPASSWD: ALL'
+
+- name: Set authorized key
+  ansible.posix.authorized_key:
+    user: "{{ item['user'] }}"
+    key: "{{ item['key'] }}"
+  loop: "{{ ssh_public_keys }}"

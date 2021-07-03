@@ -1,0 +1,20 @@
+---
+- name: Configure Cumulus Switches 
+  hosts: all
+  roles:
+    - { role: roles/ntp, become: yes }
+    - { role: roles/proxy, become: yes }
+    - { role: roles/dns, become: yes }
+    - { role: roles/network, become: yes }
+    - { role: roles/routing, become: yes }
+    - { role: roles/lldp, become: yes }
+    - { role: roles/cosmetic, become: no }
+    - { role: roles/users, become: yes }
+    - { role: roles/radius, become: yes }
+    - { role: roles/snmp, become: yes }
+  gather_facts: true
+
+  handlers:
+
+  tasks:
+

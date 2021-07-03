@@ -1,0 +1,16 @@
+---
+- name: Ensure radius package is installed.
+  apt:
+    name:
+      - libnss-mapuser
+      - libpam-radius-auth
+    state: present
+  notify: restart netd
+
+- meta: flush_handlers
+
+- name: Set radius settings
+  template:
+    src: "pam_radius_auth.j2"
+    dest: /etc/pam_radius_auth.conf
+  notify: restart netd

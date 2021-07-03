@@ -1,0 +1,12 @@
+{% for n in VXLAN["vxlans"] %}
+auto vxlan{{ n.vxlan_id }}
+iface vxlan{{ n.vxlan_id }}
+    bridge-access {{ n.vlan_id }}
+    bridge-arp-nd-suppress on
+    bridge-learning off
+    mstpctl-bpduguard yes
+    mstpctl-portbpdufilter yes
+    vxlan-id {{ n.vxlan_id }}
+    vxlan-local-tunnelip {{ bgp.bgp_rid }}
+
+{% endfor %}

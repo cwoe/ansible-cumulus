@@ -1,0 +1,6 @@
+{% for item in bonds %}
+auto {{ item.name }}
+iface {{ item.name }}
+    bond-slaves {% for port in item.ports %}{{ port }} {% endfor %}
+
+{% endfor %}

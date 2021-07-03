@@ -1,0 +1,8 @@
+{% for item in subinterfaces %}
+auto {{ item.port }}.{{ item.vlan }}
+iface {{ item.port }}.{{ item.vlan }}
+{% if item.address is defined %}
+    address {{ item.address }}
+{% endif %}
+
+{% endfor %}

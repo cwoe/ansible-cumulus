@@ -1,0 +1,5 @@
+domain {{ domain }}
+search {{ domain }}
+{% for server in nameservers %}
+nameserver {{ server }} # vrf mgmt
+{% endfor %}

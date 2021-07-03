@@ -1,0 +1,15 @@
+---
+
+- name: Add hostname
+  hostname:
+    name: "{{ device.hostname }}"
+  become: yes
+  
+- name: "Configure resolv.conf"
+  template:
+    src: resolv.j2
+    dest: /etc/resolv.conf
+    owner: root
+    group: root 
+    mode: "0644"
+  become: true

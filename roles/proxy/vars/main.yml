@@ -1,0 +1,6 @@
+---
+proxy:
+  user: youruser 
+  pass: yoursecret
+  addr: 10.0.0.1
+  port: 8080

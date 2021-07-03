@@ -1,0 +1,27 @@
+---
+- name: Ensure tzdata package is installed.
+  apt:
+    name: tzdata
+    state: present
+
+- name: Set timezone.
+  timezone:
+    name: "Europe/Berlin"
+
+- name: Set ntp settings
+  template:
+    src: "ntp.j2"
+    dest: /etc/ntp.conf
+  notify: restart ntpd
+
+- name: Disable ntpd on default vrf
+  service:
+    name: ntp
+    state: stopped
+    enabled: false
+
+- name: Enable ntpd on mgmt vrf
+  service:
+    name: ntp@mgmt
+    state: started
+    enabled: true

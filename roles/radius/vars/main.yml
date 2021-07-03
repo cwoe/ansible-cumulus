@@ -1,0 +1,4 @@
+---
+radius_server:
+  - address: 10.0.0.1
+    secret: yoursecret

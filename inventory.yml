@@ -1,0 +1,12 @@
+---
+all:
+  hosts:
+    leaf1.example.com:
+
+ 
+  vars:
+    ansible_user: cumulus
+    ansible_password: cumulus
+    ansible_become_user: root 
+    ansible_become_password: cumulus
+    ansible_python_interpreter: /usr/bin/python

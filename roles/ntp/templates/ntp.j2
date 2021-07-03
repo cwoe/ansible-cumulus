@@ -1,0 +1,14 @@
+# Disallow ntp control/query access
+restrict default kod nomodify notrap nopeer noquery
+restrict -6 default kod nomodify notrap nopeer noquery
+
+# --- NTP Servers ---
+{% for server in ntp_server %}
+server {{ server }}
+{% endfor %}
+
+# drift file.
+driftfile /etc/ntp/drift
+
+# --- interface to listen on ---
+interface listen eth0

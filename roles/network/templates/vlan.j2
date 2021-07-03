@@ -1,0 +1,9 @@
+{% for vlan in vlans %}
+auto vlan{{ vlan.vid }}
+iface vlan{{ vlan.vid }}
+    {% if vlan.address is defined %}address {{ vlan.address }}{% endif %}
+
+    vlan-id {{ vlan.vid }}
+    vlan-raw-device bridge
+
+{% endfor %}

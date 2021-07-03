@@ -1,0 +1,5 @@
+[iptables]
+{% for item in span %}
+-A FORWARD --in-interface {{ item.src_int }} -j SPAN --dport {{ item.dst_int }}
+
+{% endfor %}

@@ -1,0 +1,5 @@
+---
+- name: reload frr
+  service:
+    name: frr
+    state: restarted

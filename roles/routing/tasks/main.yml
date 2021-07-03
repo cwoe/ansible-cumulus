@@ -1,0 +1,15 @@
+---
+- name: Setting up BGP EVPN
+  template:
+    src: "bgp.j2"
+    dest: /etc/frr/frr.conf
+  notify: reload frr
+  when: bgp is defined
+
+- name: Ensure BGPD is enabled
+  lineinfile:
+    path: /etc/frr/daemons
+    regexp: '^bgpd'
+    line: bgpd=yes
+  notify: reload frr
+  when: bgp is defined

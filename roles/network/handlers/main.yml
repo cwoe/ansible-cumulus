@@ -1,0 +1,10 @@
+---
+- name: apply interface changes
+  shell:
+    cmd: ifreload -a
+  become: yes
+
+- name: install rules
+  shell:
+    cmd: cl-acltool -i
+  become: yes

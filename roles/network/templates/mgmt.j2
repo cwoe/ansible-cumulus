@@ -1,0 +1,16 @@
+source /etc/network/interfaces.d/*.intf
+
+auto lo
+iface lo inet loopback
+    address {{ loopback_address }}
+
+auto eth0
+iface eth0 inet dhcp
+    vrf mgmt
+
+auto mgmt
+iface mgmt
+    address 127.0.0.1/8
+    address ::1/128
+    vrf-table auto
+

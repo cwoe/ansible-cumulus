@@ -1,0 +1,61 @@
+---
+- name: Ensure systemwide MTU
+  copy:
+    content: |
+      {
+       "address": {"defaults": { "mtu": "9216" },
+                   "iface_defaults": {"eth0": {"mtu": "1500"}}
+                  }
+      }
+    dest: /etc/network/ifupdown2/policy.d/mtu.json
+  notify: apply interface changes
+
+- name: Adding mgmt Interfaces
+  template:
+    src: "mgmt.j2"
+    dest: /etc/network/interfaces
+  notify: apply interface changes
+
+- name: Adding physical Interfaces
+  template:
+    src: "physical.j2"
+    dest: /etc/network/interfaces.d/010-physical.intf
+  notify: apply interface changes
+  when: interfaces is defined
+
+- name: Adding Bonds
+  template:
+    src: "bond.j2"
+    dest: /etc/network/interfaces.d/020-bond.intf
+  notify: apply interface changes
+  when: bonds is defined
+
+- name: Setting up the bridge
+  template:
+    src: "bridge.j2"
+    dest: /etc/network/interfaces.d/030-bridge.intf
+  notify: apply interface changes
+  when: bridge is defined
+
+- name: Add Subinterfaces
+  template:
+    src: "vlan.j2"
+    dest: /etc/network/interfaces.d/040-vlan.intf
+  notify: apply interface changes
+  when: vlans is defined
+
+- name: Add VXLANS
+  template:
+    src: "vxlan.j2"
+    dest: /etc/network/interfaces.d/050-vxlan.intf
+  notify: apply interface changes
+  when: VXLAN is defined
+
+- meta: flush_handlers
+
+- name: Add SPAN rules
+  template:
+    src: "span.j2"
+    dest: /etc/cumulus/acl/policy.d/span.rules
+  notify: apply interface changes
+  when: span is defined

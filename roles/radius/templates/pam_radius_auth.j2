@@ -1,0 +1,5 @@
+mapped_priv_user   radius_priv_user
+{% for radius in radius_server %}
+{{ radius.address }}      {{ radius.secret }}
+{% endfor %}
+vrf-name mgmt

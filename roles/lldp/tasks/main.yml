@@ -1,0 +1,21 @@
+---
+- name: "Make sure lldpd is present"
+  apt:
+    name: lldpd
+    state: present
+    cache_valid_time: 3600
+
+- name: "Make sure lldpd is running"
+  service: 
+    name: lldpd
+    state: started
+    enabled: yes
+
+- name: "Configure lldpd.conf"
+  copy:
+    src: lldpd.conf
+    dest: /etc/lldpd.conf
+    owner: root
+    group: root 
+    mode: "0644"
+  notify: restart lldpd

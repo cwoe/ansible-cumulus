@@ -1,0 +1,25 @@
+---
+- name: Set pre auth message 
+  copy:
+    src: issue.net
+    dest: /etc/issue.net
+    owner: root
+    group: root
+    mode: '0644'
+  become: yes
+  notify: restart sshd
+
+- name: Ensure Banner is enabled
+  lineinfile:
+    path: /etc/ssh/sshd_config
+    regexp: '^Banner'
+    line: Banner /etc/issue.net
+  become: yes
+  notify: restart sshd
+
+- name: install vim
+  apt:
+    name: vim
+    state: present
+  become: yes
+...
