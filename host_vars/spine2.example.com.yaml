@@ -1,0 +1,32 @@
+device:
+  hostname: "spine2.example.com"
+  type: "spine"
+
+loopback_address: 10.0.1.4/32
+
+interfaces:
+  - name: swp1
+  - name: swp2
+  - name: swp3
+  - name: swp4
+
+bonds:
+  - name: bond0
+    ports:
+      - swp1
+      - swp2
+  - name: bond1
+    ports:
+      - swp3
+      - swp4
+
+bgp:
+  bgp_as: "65004"
+  bgp_rid: "10.0.1.4"
+  bgp_interfaces:
+    bond0:
+      bgp_type: external
+    bond1:
+      bgp_type: external
+  bgp_networks:
+    - 10.0.1.4/32
