@@ -1,0 +1,11 @@
+---
+- name: Configure syslog
+  template:
+    src: 11-remotesyslog.conf.j2
+    dest: /etc/rsyslog.d/11-remotesyslog.conf
+  notify: restart syslog
+
+- name: remove netq for cleaner syslogs
+  apt:
+    name: netq-agent
+    state: absent

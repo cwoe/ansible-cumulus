@@ -1,0 +1,3 @@
+{% for server in syslog_server %}
+action(type="omfwd" Target="{{ server }}" Device="mgmt" Port="514" Protocol="udp")
+{% endfor %}

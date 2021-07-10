@@ -1,5 +1,5 @@
 ---
-- name: Configure Cumulus Switches 
+- name: Configure Cumulus Switches
   hosts: all
   roles:
     - { role: roles/ntp, become: yes }
@@ -12,6 +12,7 @@
     - { role: roles/users, become: yes }
     - { role: roles/radius, become: yes }
     - { role: roles/snmp, become: yes }
+    - { role: roles/syslog, become: yes }
   gather_facts: true
 
   handlers:
