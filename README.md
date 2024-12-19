@@ -1,3 +1,8 @@
+# Archive Notice
+I haven't had access to a Nvidia/Cumulus switch in the last couple of years, so this playbook is unlikely to work with current OS versions. 
+
+---
+
 # ansible-cumulus
 Full setup for Cumulus Linux using ansible
 This playbook is designed for a EVPN VXLAN topology using external routing.
